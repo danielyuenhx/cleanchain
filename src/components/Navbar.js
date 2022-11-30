@@ -1,32 +1,34 @@
-import React from 'react'
-import { Button, Flex, Heading, HStack } from '@chakra-ui/react'
+import React from 'react';
+import { Button, Flex, Heading, HStack, Image } from '@chakra-ui/react';
 import { ColorModeSwitcher } from '../ColorModeSwitcher';
+import logo from '../logo.png';
 
 const Navbar = () => {
   return (
     <Flex
       position="fixed"
       top={0}
-      px="2rem"
-      py="0.75rem"
+      height="5rem"
+      px="3rem"
+      py="0.5rem"
       width="full"
-      alignItems="flex-end"
+      alignItems="center"
       justifyContent="space-between"
-      backdropFilter="auto" 
-      backdropBlur="1px"
+      backdropFilter="auto"
+      backdropBlur="2px"
       zIndex={100}
+      boxShadow="sm"
     >
-      <Heading>CleanChain</Heading>
-      <Flex
-        alignItems="flex-end"
-      >
+      <Image src={logo} w="250px" alt="logo" px={3} py={2} />
+      {/* <Heading>CleanChain</Heading> */}
+      <Flex alignItems="flex-end">
         <HStack spacing={5}>
           <Button>Connect Wallet</Button>
           <ColorModeSwitcher alignSelf="flex-end" />
         </HStack>
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
