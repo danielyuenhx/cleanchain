@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Flex,
   Box,
@@ -8,20 +8,26 @@ import {
   Code,
   Grid,
   theme,
-  Spacer
+  Spacer,
 } from '@chakra-ui/react';
 import Navbar from './components/Navbar';
 import Map from './components/Map';
 import LocationList from './components/LocationList';
 
 function App() {
+  const [position, setPosition] = useState([3.1569, 101.7123]);
+
+  const changeLocation = (position) => {
+    setPosition(position);
+  };
+
   return (
     <>
       <Navbar />
       <Box w="full" h="full" px="10rem" position="relative" top="7rem">
         <Flex justifyContent="space-around">
-          <LocationList />
-          <Map  />
+          <LocationList onClickHandler={changeLocation} />
+          <Map position={position} />
         </Flex>
       </Box>
     </>

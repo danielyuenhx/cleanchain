@@ -1,18 +1,34 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, useColorMode } from '@chakra-ui/react';
 import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import markerIconPng from 'leaflet/dist/images/marker-icon.png';
 import './Map.css';
 
-const Map = () => {
+function SetViewOnClick({ position }) {
+  const map = useMap();
+  map.setView(position, map.getZoom());
+  return null;
+}
+
+const Map = ({ position }) => {
+  const { colorMode, toggleColorMode } = useColorMode()
+
+
   return (
-    <Box position="sticky" top="20%" height="35rem" width="40%" overflow="hidden">
-      <MapContainer center={[3.25, 101.7123]} zoom={13} scrollWheelZoom={true}>
+    <Box
+      position="sticky"
+      top="20%"
+      height="35rem"
+      width="40%"
+      overflow="hidden"
+      className={colorMode === 'light' ? '' : 'dark'}
+    >
+      <MapContainer center={position} zoom={13} scrollWheelZoom={true}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <Marker
-          position={[3.1569, 101.7123]}
+          position={position}
           icon={
             new Icon({
               iconUrl: markerIconPng,
@@ -25,6 +41,7 @@ const Map = () => {
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup>
         </Marker>
+        <SetViewOnClick position={position} />
       </MapContainer>
     </Box>
   );

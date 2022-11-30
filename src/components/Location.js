@@ -17,10 +17,9 @@ import {
   TagLeftIcon,
   TagLabel
 } from '@chakra-ui/react';
-import { InfoIcon } from '@chakra-ui/icons'
 import MoneyIcon from './MoneyIcon';
 
-const Location = ({ image, title, text, bounty }) => {
+const Location = ({ image, title, text, bounty, position, onClickHandler }) => {
   return (
     <Card maxW="45%">
       <CardBody position="relative" pb={0}>
@@ -59,7 +58,7 @@ const Location = ({ image, title, text, bounty }) => {
           <Button variant="solid" colorScheme="blue">
             Hunt
           </Button>
-          <Button variant="ghost" colorScheme="blue">
+          <Button variant="ghost" colorScheme="blue" onClick={onClickHandler.bind(null, position)}>
             View on map
           </Button>
         </ButtonGroup>

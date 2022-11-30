@@ -1,4 +1,4 @@
-import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript, extendTheme } from '@chakra-ui/react';
 import React, { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import App from './App';
@@ -6,9 +6,23 @@ import App from './App';
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 
+const theme = extendTheme({
+  styles: {
+    global: {
+      body: {
+        transitionProperty: "all",
+        transitionDuration: "normal"
+      }
+    }
+  },
+  config: {
+    disableTransitionOnChange: false
+  }
+});
+
 root.render(
   <StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <ColorModeScript initialColorMode='system' />
       <App />
     </ChakraProvider>
