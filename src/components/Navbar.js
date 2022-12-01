@@ -1,22 +1,22 @@
 import React from 'react';
-import { Button, Flex, Heading, HStack, Image } from '@chakra-ui/react';
+import { Button, Flex, Heading, HStack, Image, useColorModeValue } from '@chakra-ui/react';
 import { ColorModeSwitcher } from '../ColorModeSwitcher';
-import logo from '../logo.png';
+import logo from '../logo2.png';
 
 const Navbar = () => {
+  const bg = useColorModeValue('#fcfbfd', '#1b1c1f')
+
   return (
     <Flex
       position="fixed"
       top={0}
       height="4rem"
-      px="3rem"
+      px="1rem"
       width="full"
       alignItems="center"
       justifyContent="space-between"
-      backdropFilter="auto"
-      backdropBlur="2px"
       zIndex={100}
-      boxShadow="sm"
+      bg={bg}
     >
       <Image src={logo} w="200px" alt="logo" px={3} py={2} />
       {/* <Heading>CleanChain</Heading> */}

@@ -1,12 +1,12 @@
 import React from 'react';
-import { Box, Heading, Stack, Divider, useColorModeValue } from '@chakra-ui/react';
+import { Box, Heading, Wrap, Divider } from '@chakra-ui/react';
 import Location from './Location';
 import river1 from '../images/river1.jpg';
 import river2 from '../images/river2.jpg';
 import river3 from '../images/river3.jpg';
 import river4 from '../images/river4.jpeg';
 
-const LocationList = () => {
+const LocationList = ({ onClickHandler }) => {
   const riverList = [
     {
       image: river1,
@@ -38,16 +38,24 @@ const LocationList = () => {
     },
   ];
 
-  const bg = useColorModeValue('#f5f4f6', '#121316')
-
   return (
-    <Box px="3rem" py="1.5rem" w="100%" bg={bg}>
-      <Stack>
-        <Heading size="lg" mb="1rem">Available Bounties</Heading>
+    <Box position="relative" w="50%" mb="5rem">
+      <Heading fontSize="50px" mb="1rem">
+        Available bounties
+      </Heading>
+      <Divider />
+      <Wrap spacing={5} justify="center" mt={5}>
         {riverList.map(river => (
-          <Location image={river.image} title={river.title} text={river.text} bounty={river.bounty} />
+          <Location
+            image={river.image}
+            title={river.title}
+            text={river.text}
+            bounty={river.bounty}
+            position={river.position}
+            onClickHandler={onClickHandler}
+          />
         ))}
-      </Stack>
+      </Wrap>
     </Box>
   );
 };
