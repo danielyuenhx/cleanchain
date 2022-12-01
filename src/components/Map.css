@@ -1,12 +1,12 @@
 .leaflet-container {
     height: 7.5rem;
-    border-radius: 2rem;
+    border-radius: 0.5rem;
     border-width: solid 1px gray;
     transition: 2s linear;
 }
 
 .dark .leaflet-tile {
-    filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+    filter: brightness(0.7) invert(1) contrast(6) hue-rotate(200deg) saturate(0.5) brightness(0.7);
 }
 
 .dark .leaflet-container {

@@ -14,7 +14,7 @@ import {
 import MoneyIcon from './MoneyIcon';
 import Map from './Map';
 
-const Location = ({ title, area, text, bounty, coordinates }) => {
+const Location = ({ title, area, text, bounty, coordinates, image }) => {
   const bg = useColorModeValue('#fcfbfd', '#1b1c1f');
 
   return (
@@ -24,13 +24,18 @@ const Location = ({ title, area, text, bounty, coordinates }) => {
       variant="outline"
       bg={bg}
     >
+      {/* <Image
+        objectFit="cover"
+        maxW={{ base: '100%', sm: '200px' }}
+        src={image}
+      /> */}
       <Map position={[coordinates[1], coordinates[0]]} />
       <Stack>
         <CardBody>
           <Tag
             size="lg"
             variant="subtle"
-            right="1rem"
+            right="2rem"
             position="absolute"
             margin="auto 0"
             top={0}
@@ -60,6 +65,9 @@ const Location = ({ title, area, text, bounty, coordinates }) => {
 
           <Text fontSize="sm" color="gray.500">
             {area}
+          </Text>
+          <Text fontSize="sm" color="gray.500">
+            {coordinates[0]}, {coordinates[1]}
           </Text>
         </CardBody>
 

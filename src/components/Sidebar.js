@@ -12,14 +12,14 @@ import {
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 
-const Sidebar = () => {
+const Sidebar = ({ onChange }) => {
   const bg = useColorModeValue('#fcfbfd', '#1b1c1f');
 
   return (
     <Box w="20%" h="full" bg={bg}>
       <Stack p="2rem" spacing="1rem">
         <InputGroup>
-          <Input placeholder="Search..." />
+          <Input placeholder="Search..." onChange={onChange} />
           <InputRightElement children={<SearchIcon color="green.500" />} />
         </InputGroup>
         <Divider />

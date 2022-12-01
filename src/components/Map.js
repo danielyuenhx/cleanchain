@@ -20,17 +20,18 @@ const Map = ({ position }) => {
     <Box
       height="100%"
       width="25%"
+      px="1.5rem"
+      py="1rem"
       className={colorMode === 'light' ? '' : 'dark'}
     >
-      <MapContainer center={position} zoom={9} scrollWheelZoom={true}>
+      <MapContainer center={position} zoom={15} zoomControl={false}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <Marker
           position={position}
           icon={
             new Icon({
               iconUrl: markerIconPng,
-              iconSize: [25, 41],
-              iconAnchor: [12, 41],
+              iconSize: [12, 20],
             })
           }
         >

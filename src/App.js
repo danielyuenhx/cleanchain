@@ -1,25 +1,32 @@
-import React, { useState } from 'react';
-import {
-  Flex,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-  Spacer,
-} from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Flex, Box } from '@chakra-ui/react';
 import Navbar from './components/Navbar';
-import Map from './components/Map';
 import LocationList from './components/LocationList';
 import Sidebar from './components/Sidebar';
+import { getSamplePoints } from './actions';
 
 function App() {
-  const [position, setPosition] = useState([3.1569, 101.7123]);
+  const [locations, setLocations] = useState([]);
+  const [fetchedLocations, setFetchedLocations] = useState([]);
+  useEffect(() => {
+    getSamplePoints().then(res => {
+      setLocations([...res]);
+      setFetchedLocations([...res]);
+    });
+  }, []);
 
-  const changeLocation = (position) => {
-    setPosition(position);
+  const onChangeHandler = event => {
+    const string = event.target.value;
+    if (string) {
+      setLocations(
+        fetchedLocations.filter(loc =>
+          loc.comment.toLowerCase().includes(string.toLowerCase()) || loc.area.label.toLowerCase().includes(string.toLowerCase())
+        )
+      );
+    }
+    else {
+      setLocations(fetchedLocations);
+    }
   };
 
   return (
@@ -27,8 +34,8 @@ function App() {
       <Navbar />
       <Box w="full" h="calc(100vh - 4rem)" position="relative" top="4rem">
         <Flex justifyContent="flex-start" h="100%">
-          <Sidebar />
-          <LocationList onClickHandler={changeLocation} />
+          <Sidebar onChange={onChangeHandler} />
+          <LocationList locations={locations} />
         </Flex>
       </Box>
     </>

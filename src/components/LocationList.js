@@ -7,14 +7,13 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import Location from './Location';
-import { getSamplePoints } from '../actions';
-import * as api from '../api/index.js';
 import river1 from '../images/river1.jpg';
 import river2 from '../images/river2.jpg';
 import river3 from '../images/river3.jpg';
 import river4 from '../images/river4.jpeg';
 
-const LocationList = () => {
+const LocationList = ({ locations }) => {
+  const imageList = [river1, river2, river3, river4];
   const riverList = [
     {
       image: river1,
@@ -46,12 +45,6 @@ const LocationList = () => {
     },
   ];
 
-  const [locations, setLocations] = useState([]);
-
-  useEffect(() => {
-    getSamplePoints().then(res => setLocations(res));
-  }, []);
-  console.log(locations)
   const bg = useColorModeValue('#f5f4f6', '#121316');
 
   return (
@@ -72,7 +65,7 @@ const LocationList = () => {
             title={location.comment}
             area={location.area.label}
             coordinates={[location.long, location.lat]}
-            // text={location.samplingPointType.label}
+            image={imageList[Math.floor(Math.random() * imageList.length)]}
           />
         ))}
       </Stack>
