@@ -5,17 +5,16 @@ import {
   Stack,
   CardBody,
   Text,
-  Heading,
-  CardFooter,
-  Button,
   Tag,
   TagLeftIcon,
   TagLabel,
+  Badge,
   useColorModeValue,
 } from '@chakra-ui/react';
 import MoneyIcon from './MoneyIcon';
+import Map from './Map';
 
-const Location = ({ image, title, text, bounty }) => {
+const Location = ({ title, area, text, bounty, coordinates }) => {
   const bg = useColorModeValue('#fcfbfd', '#1b1c1f');
 
   return (
@@ -25,12 +24,7 @@ const Location = ({ image, title, text, bounty }) => {
       variant="outline"
       bg={bg}
     >
-      <Image
-        objectFit="cover"
-        maxW={{ base: '100%', sm: '200px' }}
-        src={image}
-      />
-
+      <Map position={[coordinates[1], coordinates[0]]} />
       <Stack>
         <CardBody>
           <Tag
@@ -45,14 +39,28 @@ const Location = ({ image, title, text, bounty }) => {
             h="1rem"
           >
             <TagLeftIcon boxSize="12px" as={MoneyIcon} />
-            <TagLabel>{bounty} ALGOs</TagLabel>
+            <TagLabel>{Math.floor(Math.random() * 1000)} ALGOs</TagLabel>
           </Tag>
 
-          <Text fontSize="md" fontWeight={700}>
-            {title}
-          </Text>
+          <Stack direction="row" alignItems="center">
+            <Text fontSize="md" fontWeight={700}>
+              {title}
+            </Text>
+            <Badge colorScheme="red" whiteSpace="wrap" textAlign="center">
+              High priority
+            </Badge>
+            <Badge
+              colorScheme="purple"
+              textAlign="center"
+              verticalAlign="center"
+            >
+              New
+            </Badge>
+          </Stack>
 
-          <Text py="2" fontSize="sm" color="gray.500">{text}</Text>
+          <Text fontSize="sm" color="gray.500">
+            {area}
+          </Text>
         </CardBody>
 
         {/* <CardFooter>

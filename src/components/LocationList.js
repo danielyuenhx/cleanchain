@@ -1,6 +1,14 @@
-import React from 'react';
-import { Box, Heading, Stack, Divider, useColorModeValue } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  Heading,
+  Stack,
+  Divider,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import Location from './Location';
+import { getSamplePoints } from '../actions';
+import * as api from '../api/index.js';
 import river1 from '../images/river1.jpg';
 import river2 from '../images/river2.jpg';
 import river3 from '../images/river3.jpg';
@@ -38,14 +46,34 @@ const LocationList = () => {
     },
   ];
 
-  const bg = useColorModeValue('#f5f4f6', '#121316')
+  const [locations, setLocations] = useState([]);
+
+  useEffect(() => {
+    getSamplePoints().then(res => setLocations(res));
+  }, []);
+  console.log(locations)
+  const bg = useColorModeValue('#f5f4f6', '#121316');
 
   return (
-    <Box px="3rem" py="1.5rem" w="100%" bg={bg}>
+    <Box
+      px="3rem"
+      py="1.5rem"
+      w="100%"
+      bg={bg}
+      overflowX="hidden"
+      overflowY="scroll"
+    >
       <Stack>
-        <Heading size="lg" mb="1rem">Available Bounties</Heading>
-        {riverList.map(river => (
-          <Location image={river.image} title={river.title} text={river.text} bounty={river.bounty} />
+        <Heading size="lg" mb="1rem">
+          Available Bounties
+        </Heading>
+        {locations.map(location => (
+          <Location
+            title={location.comment}
+            area={location.area.label}
+            coordinates={[location.long, location.lat]}
+            // text={location.samplingPointType.label}
+          />
         ))}
       </Stack>
     </Box>

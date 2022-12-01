@@ -18,14 +18,11 @@ const Map = ({ position }) => {
 
   return (
     <Box
-      position="sticky"
-      top="20%"
-      height="35rem"
-      width="40%"
-      overflow="hidden"
+      height="100%"
+      width="25%"
       className={colorMode === 'light' ? '' : 'dark'}
     >
-      <MapContainer center={position} zoom={13} scrollWheelZoom={true}>
+      <MapContainer center={position} zoom={9} scrollWheelZoom={true}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <Marker
           position={position}
