@@ -8,9 +8,8 @@ const Navbar = () => {
     <Flex
       position="fixed"
       top={0}
-      height="5rem"
+      height="4rem"
       px="3rem"
-      py="0.5rem"
       width="full"
       alignItems="center"
       justifyContent="space-between"
@@ -19,7 +18,7 @@ const Navbar = () => {
       zIndex={100}
       boxShadow="sm"
     >
-      <Image src={logo} w="250px" alt="logo" px={3} py={2} />
+      <Image src={logo} w="200px" alt="logo" px={3} py={2} />
       {/* <Heading>CleanChain</Heading> */}
       <Flex alignItems="flex-end">
         <HStack spacing={5}>

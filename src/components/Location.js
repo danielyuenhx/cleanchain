@@ -42,11 +42,11 @@ const Location = ({ image, title, text, bounty, position, onClickHandler }) => {
               </Badge>
             </Stack>
           </Flex>
-          <Text marginBottom="4rem">{text}</Text>
+          <Text marginBottom="4rem !important">{text}</Text>
           {/* <Text color="blue.600" fontSize="xl">
             {bounty} ALGOs
           </Text> */}
-          <Tag size="lg" variant="subtle" bottom={0} marginBottom="1rem" position="absolute">
+          <Tag size="lg" variant="subtle" bottom={0} marginBottom="1rem !important" position="absolute">
             <TagLeftIcon boxSize="12px" as={MoneyIcon} />
             <TagLabel>{bounty} ALGOs</TagLabel>
           </Tag>
