@@ -15,26 +15,44 @@ function App() {
     });
   }, []);
 
-  const onChangeHandler = event => {
-    const string = event.target.value;
-    if (string) {
-      setLocations(
-        fetchedLocations.filter(loc =>
-          loc.comment.toLowerCase().includes(string.toLowerCase()) || loc.area.label.toLowerCase().includes(string.toLowerCase())
-        )
+  const [searchString, setSearchString] = useState('');
+  const [bountyRange, setBountyRange] = useState([0, 2000]);
+
+  const onChangeSearchHandler = event => {
+    setSearchString(event.target.value);
+  };
+
+  const onChangeSliderHandler = val => {
+    setBountyRange(val);
+  };
+
+  useEffect(() => {
+    let result = fetchedLocations;
+    if (searchString) {
+      result = result.filter(
+        loc =>
+          loc.comment.toLowerCase().includes(searchString.toLowerCase()) ||
+          loc.area.label.toLowerCase().includes(searchString.toLowerCase()) ||
+          loc.samplingPointType.label
+            .toLowerCase()
+            .includes(searchString.toLowerCase())
       );
     }
-    else {
-      setLocations(fetchedLocations);
-    }
-  };
+    result = result.filter(
+      loc => loc.bounty >= bountyRange[0] && loc.bounty <= bountyRange[1]
+    );
+    setLocations(result);
+  }, [searchString, bountyRange]);
 
   return (
     <>
       <Navbar />
       <Box w="full" h="calc(100vh - 4rem)" position="relative" top="4rem">
         <Flex justifyContent="flex-start" h="100%">
-          <Sidebar onChange={onChangeHandler} />
+          <Sidebar
+            onChangeSearch={onChangeSearchHandler}
+            onChangeSlider={onChangeSliderHandler}
+          />
           <LocationList locations={locations} />
         </Flex>
       </Box>

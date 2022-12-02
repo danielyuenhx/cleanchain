@@ -10,12 +10,16 @@ import {
   TagLabel,
   Badge,
   useColorModeValue,
+  CardFooter,
+  Button,
+  Divider,
 } from '@chakra-ui/react';
 import MoneyIcon from './MoneyIcon';
 import Map from './Map';
 
-const Location = ({ title, area, text, bounty, coordinates, image }) => {
+const Location = ({ title, area, type, bounty, coordinates, image }) => {
   const bg = useColorModeValue('#fcfbfd', '#1b1c1f');
+  const hoverbg = useColorModeValue('#f6f6f6', '#28292e');
 
   return (
     <Card
@@ -23,6 +27,9 @@ const Location = ({ title, area, text, bounty, coordinates, image }) => {
       overflow="hidden"
       variant="outline"
       bg={bg}
+      transition="ease-in-out 200ms"
+      _hover={{bg: hoverbg}}
+      cursor="pointer"
     >
       {/* <Image
         objectFit="cover"
@@ -44,11 +51,11 @@ const Location = ({ title, area, text, bounty, coordinates, image }) => {
             h="1rem"
           >
             <TagLeftIcon boxSize="12px" as={MoneyIcon} />
-            <TagLabel>{Math.floor(Math.random() * 1000)} ALGOs</TagLabel>
+            <TagLabel>{bounty} ALGOs</TagLabel>
           </Tag>
 
           <Stack direction="row" alignItems="center">
-            <Text fontSize="md" fontWeight={700}>
+            <Text fontSize="lg" fontWeight={700}>
               {title}
             </Text>
             <Badge colorScheme="red" whiteSpace="wrap" textAlign="center">
@@ -63,6 +70,9 @@ const Location = ({ title, area, text, bounty, coordinates, image }) => {
             </Badge>
           </Stack>
 
+          <Text fontSize="sm" fontWeight={500} color="gray.600">
+            {type}
+          </Text>
           <Text fontSize="sm" color="gray.500">
             {area}
           </Text>
@@ -70,12 +80,9 @@ const Location = ({ title, area, text, bounty, coordinates, image }) => {
             {coordinates[0]}, {coordinates[1]}
           </Text>
         </CardBody>
-
-        {/* <CardFooter>
-          <Tag size="lg" variant="subtle" bottom={0} marginBottom="1rem !important" position="absolute">
-            <TagLeftIcon boxSize="12px" as={MoneyIcon} />
-            <TagLabel>{bounty} ALGOs</TagLabel>
-          </Tag>
+        {/* <Divider />
+        <CardFooter>
+          <Button>View Full Details</Button>
         </CardFooter> */}
       </Stack>
     </Card>

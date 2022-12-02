@@ -23,8 +23,9 @@ const Map = ({ position }) => {
       px="1.5rem"
       py="1rem"
       className={colorMode === 'light' ? '' : 'dark'}
+      cursor="default"
     >
-      <MapContainer center={position} zoom={15} zoomControl={false}>
+      <MapContainer center={position} zoom={15} zoomControl={false} dragging={false} scrollWheelZoom={false}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <Marker
           position={position}

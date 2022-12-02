@@ -62,9 +62,12 @@ const LocationList = ({ locations }) => {
         </Heading>
         {locations.map(location => (
           <Location
+            key={location.comment}
             title={location.comment}
             area={location.area.label}
+            type={location.samplingPointType.label}
             coordinates={[location.long, location.lat]}
+            bounty={location.bounty}
             image={imageList[Math.floor(Math.random() * imageList.length)]}
           />
         ))}
