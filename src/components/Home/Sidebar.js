@@ -24,7 +24,7 @@ const Sidebar = ({ onChangeSearch, onChangeSlider }) => {
   const [sliderValue, setSliderValue] = useState([0, 2000]);
 
   return (
-    <Box w="25%" h="full" bg={bg}>
+    <Box w="25%" h="full" bg={bg} position="relative">
       <Stack p="2rem" spacing="1rem">
         <Text fontSize="xs" color="gray.400">
           Search by name, location or type!
@@ -103,6 +103,7 @@ const Sidebar = ({ onChangeSearch, onChangeSlider }) => {
           </RangeSlider>
         </Flex>
       </Stack>
+      <Text position="absolute" bottom="1rem" left="1.5rem" color="gray.400" fontSize={15}>CLEANCHAIN 2022 ©</Text>
     </Box>
   );
 };

@@ -10,3 +10,13 @@ export const getSamplePoints = async () => {
     return e;
   }
 };
+
+export const getSamplePoint = async () => {
+  try {
+    const { data } = await api.getSamplePoint();
+    
+    return data;
+  } catch (e) {
+    return e;
+  }
+};

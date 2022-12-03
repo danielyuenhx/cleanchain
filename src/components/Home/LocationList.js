@@ -7,10 +7,10 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import Location from './Location';
-import river1 from '../images/river1.jpg';
-import river2 from '../images/river2.jpg';
-import river3 from '../images/river3.jpg';
-import river4 from '../images/river4.jpeg';
+import river1 from '../../images/river1.jpg';
+import river2 from '../../images/river2.jpg';
+import river3 from '../../images/river3.jpg';
+import river4 from '../../images/river4.jpeg';
 
 const LocationList = ({ locations }) => {
   const imageList = [river1, river2, river3, river4];
@@ -44,7 +44,6 @@ const LocationList = ({ locations }) => {
       position: [4.5981, 101.0899],
     },
   ];
-
   const bg = useColorModeValue('#f5f4f6', '#121316');
 
   return (
@@ -63,6 +62,7 @@ const LocationList = ({ locations }) => {
         {locations.map(location => (
           <Location
             key={location.comment}
+            id={location.notation}
             title={location.comment}
             area={location.area.label}
             type={location.samplingPointType.label}

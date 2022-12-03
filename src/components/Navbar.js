@@ -1,10 +1,18 @@
 import React from 'react';
-import { Button, Flex, Heading, HStack, Image, useColorModeValue } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  Heading,
+  HStack,
+  Image,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { ColorModeSwitcher } from '../ColorModeSwitcher';
 import logo from '../logo2.png';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-  const bg = useColorModeValue('#fcfbfd', '#1b1c1f')
+  const bg = useColorModeValue('#fcfbfd', '#1b1c1f');
 
   return (
     <Flex
@@ -18,7 +26,9 @@ const Navbar = () => {
       zIndex={100}
       bg={bg}
     >
-      <Image src={logo} w="200px" alt="logo" px={3} py={2} />
+      <Link to="/">
+        <Image src={logo} w="200px" alt="logo" px={3} py={2} />
+      </Link>
       {/* <Heading>CleanChain</Heading> */}
       <Flex alignItems="flex-end">
         <HStack spacing={5}>

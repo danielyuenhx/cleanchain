@@ -1,5 +1,4 @@
 .leaflet-container {
-    height: 10rem;
     border-radius: 0.5rem;
     border-width: solid 1px gray;
     transition: 2s linear;
