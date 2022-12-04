@@ -14,7 +14,7 @@ import accountContext from './components/accountContext';
 const peraWallet = new PeraWalletConnect();
 
 // The app ID on testnet
-// const appIndex = ;
+const appIndex = 146945426;
 
 // connect to the algorand node
 const algod = new algosdk.Algodv2(
