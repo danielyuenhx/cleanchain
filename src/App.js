@@ -58,7 +58,7 @@ function App() {
   }, []);
 
   return (
-    <walletContext.Provider value={{ peraWallet, algod }}>
+    <walletContext.Provider value={{ peraWallet, algod, appIndex }}>
       <accountContext.Provider value={{ accountAddress, setAccountAddress }}>
         <BrowserRouter>
           <Navbar />

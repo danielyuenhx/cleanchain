@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Box,
@@ -16,11 +16,15 @@ import {
   ModalHeader,
   ModalFooter,
   ModalCloseButton,
-  useToast
+  useToast,
 } from '@chakra-ui/react';
 import { getSamplePoint } from '../../api';
 import LocationInfo from './LocationInfo';
 import AcceptanceCriteria from './AcceptanceCriteria';
+
+import algosdk, { waitForConfirmation } from 'algosdk';
+import walletContext from '../walletContext';
+import accountContext from '../accountContext';
 
 const LocationPage = () => {
   const [location, setLocation] = useState('');
@@ -36,18 +40,42 @@ const LocationPage = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const toast = useToast()
+  const toast = useToast();
 
-  const onConfirm = () => {
+  const { peraWallet, algod, appIndex } = useContext(walletContext);
+  const { accountAddress, setAccountAddress } = useContext(accountContext);
+
+  const onConfirm = async () => {
+    try {
+      // get suggested params
+      const suggestedParams = await algod.getTransactionParams().do();
+
+      const actionTx = algod.makeApplicationNoOpTxn(
+        accountAddress,
+        suggestedParams,
+        appIndex,
+      );
+
+      const actionTxGroup = [{txn: actionTx, signers: [accountAddress]}];
+
+      const signedTx = await peraWallet.signTransaction([actionTxGroup]);
+      console.log(signedTx);
+      const { txId } = await algod.sendRawTransaction(signedTx).do();
+      const result = await waitForConfirmation(algod, txId, 2);
+      console.log(result)
+    } catch (e) {
+      console.log(e);
+    }
     onClose();
     setIsConfirmed(true);
     toast({
       title: 'Bounty selected',
-      description: "Successfully selected this bounty. Verify to claim within 30 days.",
+      description:
+        'Successfully selected this bounty. Verify to claim within 30 days.',
       status: 'success',
       duration: 9000,
       isClosable: true,
-    })
+    });
   };
 
   return (

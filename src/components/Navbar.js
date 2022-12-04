@@ -19,7 +19,7 @@ import accountContext from './accountContext';
 const Navbar = () => {
   const bg = useColorModeValue('#fcfbfd', '#1b1c1f');
 
-  const { peraWallet, algod } = useContext(walletContext);
+  const { peraWallet, algod, appIndex } = useContext(walletContext);
   const { accountAddress, setAccountAddress } = useContext(accountContext);
 
   const isConnectedToPeraWallet = !!accountAddress;
