@@ -17,6 +17,7 @@ const HomePage = () => {
 
   const [searchString, setSearchString] = useState('');
   const [bountyRange, setBountyRange] = useState([0, 2000]);
+  const [status, setStatus] = useState(1);
 
   const onChangeSearchHandler = event => {
     setSearchString(event.target.value);
@@ -24,6 +25,10 @@ const HomePage = () => {
 
   const onChangeSliderHandler = val => {
     setBountyRange(val);
+  };
+
+  const onChangeStatusHandler = val => {
+    setStatus(val);
   };
 
   useEffect(() => {
@@ -41,8 +46,13 @@ const HomePage = () => {
     result = result.filter(
       loc => loc.bounty >= bountyRange[0] && loc.bounty <= bountyRange[1]
     );
+    if (status == 2) {
+      result = result.filter(loc => loc.isOpen == 1);
+    } else if (status == 3) {
+      result = result.filter(loc => loc.isOpen == 0);
+    }
     setLocations(result);
-  }, [searchString, bountyRange]);
+  }, [searchString, bountyRange, status]);
 
   return (
     <Box w="full" h="calc(100vh - 4rem)" position="relative" top="4rem">
@@ -50,6 +60,7 @@ const HomePage = () => {
         <Sidebar
           onChangeSearch={onChangeSearchHandler}
           onChangeSlider={onChangeSliderHandler}
+          onChangeStatus={onChangeStatusHandler}
         />
         <LocationList locations={locations} />
       </Flex>

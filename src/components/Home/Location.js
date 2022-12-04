@@ -15,7 +15,16 @@ import MoneyIcon from '../MoneyIcon';
 import SmallMap from './SmallMap';
 import { Link } from 'react-router-dom';
 
-const Location = ({ id, title, area, type, bounty, coordinates, image }) => {
+const Location = ({
+  id,
+  title,
+  area,
+  type,
+  bounty,
+  coordinates,
+  isOpen,
+  image,
+}) => {
   const bg = useColorModeValue('#fcfbfd', '#1b1c1f');
   const hoverbg = useColorModeValue('#f6f6f6', '#28292e');
   const typeColor = useColorModeValue('#f5f4f6', '#121316');
@@ -78,6 +87,14 @@ const Location = ({ id, title, area, type, bounty, coordinates, image }) => {
             </Text>
             <Text fontSize="sm" color="gray.500">
               {coordinates[0]}, {coordinates[1]}
+            </Text>
+            <Text
+              mt="0.5rem"
+              fontSize="lg"
+              color={isOpen ? 'green.500' : 'gray.500'}
+              fontWeight={700}
+            >
+              {isOpen ? 'OPEN' : 'CLOSED'}
             </Text>
           </CardBody>
           {/* <Divider />

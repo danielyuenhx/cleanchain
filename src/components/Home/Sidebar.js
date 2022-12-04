@@ -16,12 +16,15 @@ import {
   RangeSliderMark,
   Flex,
   useColorModeValue,
+  Radio,
+  RadioGroup,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 
-const Sidebar = ({ onChangeSearch, onChangeSlider }) => {
+const Sidebar = ({ onChangeSearch, onChangeSlider, onChangeStatus }) => {
   const bg = useColorModeValue('#fcfbfd', '#1b1c1f');
   const [sliderValue, setSliderValue] = useState([0, 2000]);
+  const [status, setStatus] = useState();
 
   return (
     <Box w="25%" h="full" bg={bg} position="relative">
@@ -33,6 +36,19 @@ const Sidebar = ({ onChangeSearch, onChangeSlider }) => {
           <Input placeholder="Search..." onChange={onChangeSearch} />
           <InputRightElement children={<SearchIcon color="green.500" />} />
         </InputGroup>
+        <Divider />
+        <Heading size="sm" textAlign="left">
+          Status
+        </Heading>
+        <RadioGroup onChange={onChangeStatus} defaultValue='1'>
+          <Stack spacing={1} direction="column">
+            <Radio value='1' colorScheme="blue">
+              All
+            </Radio>
+            <Radio value='2' colorScheme="blue">Open</Radio>
+            <Radio value='3' colorScheme="blue">Closed</Radio>
+          </Stack>
+        </RadioGroup>
         <Divider />
         <Heading size="sm" textAlign="left">
           Tags
@@ -103,7 +119,15 @@ const Sidebar = ({ onChangeSearch, onChangeSlider }) => {
           </RangeSlider>
         </Flex>
       </Stack>
-      <Text position="absolute" bottom="1rem" left="1.5rem" color="gray.400" fontSize={15}>CLEANCHAIN 2022 ©</Text>
+      <Text
+        position="absolute"
+        bottom="1rem"
+        left="1.5rem"
+        color="gray.400"
+        fontSize={15}
+      >
+        CLEANCHAIN 2022 ©
+      </Text>
     </Box>
   );
 };
