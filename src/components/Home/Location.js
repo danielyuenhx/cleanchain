@@ -60,7 +60,7 @@ const Location = ({
               h="1rem"
             >
               <TagLeftIcon boxSize="12px" as={MoneyIcon} />
-              <TagLabel>{bounty} ALGOs</TagLabel>
+              <TagLabel>{bounty} microALGOs</TagLabel>
             </Tag>
 
             <Stack direction="row" alignItems="center">

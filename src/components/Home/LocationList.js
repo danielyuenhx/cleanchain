@@ -4,6 +4,8 @@ import {
   Heading,
   Stack,
   Divider,
+  Flex,
+  Spinner,
   useColorModeValue,
 } from '@chakra-ui/react';
 import Location from './Location';
@@ -29,19 +31,25 @@ const LocationList = ({ locations }) => {
         <Heading size="lg" mb="1rem">
           Available Bounties
         </Heading>
-        {locations.map(location => (
-          <Location
-            key={location.comment}
-            id={location.notation}
-            title={location.comment}
-            area={location.area.label}
-            type={location.samplingPointType.label}
-            coordinates={[location.long, location.lat]}
-            bounty={location.bounty}
-            isOpen={location.isOpen}
-            image={imageList[Math.floor(Math.random() * imageList.length)]}
-          />
-        ))}
+        {!locations.length ? (
+          <Flex justifyContent="center" alignItems="center">
+            <Spinner size="xl" color="blue.500" mt="16rem" />
+          </Flex>
+        ) : (
+          locations.map(location => (
+            <Location
+              key={location.comment}
+              id={location.notation}
+              title={location.comment}
+              area={location.area.label}
+              type={location.samplingPointType.label}
+              coordinates={[location.long, location.lat]}
+              bounty={location.bounty}
+              isOpen={location.isOpen}
+              image={imageList[Math.floor(Math.random() * imageList.length)]}
+            />
+          ))
+        )}
       </Stack>
     </Box>
   );

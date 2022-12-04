@@ -20,20 +20,17 @@ const Navbar = () => {
   const bg = useColorModeValue('#fcfbfd', '#1b1c1f');
 
   const { peraWallet, algod, appIndex } = useContext(walletContext);
-  const { accountAddress, setAccountAddress } = useContext(accountContext);
+  const { accountAddress, setAccountAddress, balance, setBalance } = useContext(accountContext);
 
   const isConnectedToPeraWallet = !!accountAddress;
 
   const toast = useToast();
-
-  const [balance, setBalance] = useState(0);
 
   useEffect(() => {
     let accountInfo = algod
       .accountInformation(accountAddress)
       .do()
       .then(accountInfo => {
-        console.log(accountInfo.amount);
         setBalance(accountInfo.amount);
       });
   });
@@ -96,7 +93,7 @@ const Navbar = () => {
           )}
           {isConnectedToPeraWallet && (
             <Tag>
-              BALANCE: {balance} microAlgos
+              {balance} microALGOs
             </Tag>
           )}
           <Button

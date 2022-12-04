@@ -11,7 +11,9 @@ import walletContext from './components/walletContext';
 import accountContext from './components/accountContext';
 
 // Create the PeraWalletConnect instance outside the component
-const peraWallet = new PeraWalletConnect();
+const peraWallet = new PeraWalletConnect({
+  network: 'testnet',
+});
 
 // The app ID on testnet
 const appIndex = 146945426;
@@ -25,12 +27,22 @@ const algod = new algosdk.Algodv2(
 
 function App() {
   const [accountAddress, setAccountAddress] = useState(null);
+  const [balance, setBalance] = useState(0);
   const isConnectedToPeraWallet = !!accountAddress;
 
   function handleDisconnectWalletClick() {
     peraWallet.disconnect();
     setAccountAddress(null);
   }
+
+  useEffect(() => {
+    let accountInfo = algod
+      .accountInformation(accountAddress)
+      .do()
+      .then(accountInfo => {
+        setBalance(accountInfo.amount);
+      });
+  });
 
   // const checkCounterState = async () => {
   //   try {
@@ -59,7 +71,7 @@ function App() {
 
   return (
     <walletContext.Provider value={{ peraWallet, algod, appIndex }}>
-      <accountContext.Provider value={{ accountAddress, setAccountAddress }}>
+      <accountContext.Provider value={{ accountAddress, setAccountAddress, balance, setBalance }}>
         <BrowserRouter>
           <Navbar />
           <Routes>

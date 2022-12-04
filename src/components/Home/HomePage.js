@@ -47,9 +47,9 @@ const HomePage = () => {
       loc => loc.bounty >= bountyRange[0] && loc.bounty <= bountyRange[1]
     );
     if (status == 2) {
-      result = result.filter(loc => loc.isOpen == 1);
-    } else if (status == 3) {
-      result = result.filter(loc => loc.isOpen == 0);
+      result = result.filter(loc => loc.isOpen === 1);
+    } else if (status === 3) {
+      result = result.filter(loc => loc.isOpen === 0);
     }
     setLocations(result);
   }, [searchString, bountyRange, status]);

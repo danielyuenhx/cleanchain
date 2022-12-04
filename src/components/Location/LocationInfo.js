@@ -13,7 +13,7 @@ import {
 import Map from './Map';
 import MoneyIcon from '../MoneyIcon';
 
-const LocationInfo = ({ location }) => {
+const LocationInfo = ({ location, bounty, isClaimed }) => {
   const [position, setPosition] = useState([location.lat, location.long]);
 
   const onClickHandler = position => {
@@ -32,7 +32,7 @@ const LocationInfo = ({ location }) => {
         h="1rem"
       >
         <TagLeftIcon boxSize="12px" as={MoneyIcon} />
-        <TagLabel>{location.bounty} ALGOs</TagLabel>
+        <TagLabel>100000 microALGOs</TagLabel>
       </Tag>
       <Stack direction="row" alignItems="center">
         <Heading size="lg" mr="2rem">
@@ -46,14 +46,14 @@ const LocationInfo = ({ location }) => {
         </Badge>
       </Stack>
       <Box mt="0.75rem" mb="0.75rem">
-        {!location.isOpen && <Tag textTransform="uppercase">Bounty claimed by 0xa434…1b4c</Tag>}
+        {!isClaimed && <Tag textTransform="uppercase">Bounty claimed by 0xIA4X...ILRI</Tag>}
         <Text
           mt="0.5rem"
           fontSize="lg"
-          color={location.isOpen ? 'green.500' : 'gray.500'}
+          color={isClaimed ? 'green.500' : 'gray.500'}
           fontWeight={700}
         >
-          {location.isOpen ? 'OPEN' : 'CLOSED'}
+          {isClaimed ? 'OPEN' : 'CLOSED'}
         </Text>
         <Text fontSize="md" color="gray.500">
           {location.notation}
