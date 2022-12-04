@@ -32,7 +32,7 @@ const LocationInfo = ({ location, bounty, isClaimed }) => {
         h="1rem"
       >
         <TagLeftIcon boxSize="12px" as={MoneyIcon} />
-        <TagLabel>100000 microALGOs</TagLabel>
+        <TagLabel>{bounty} microALGOs</TagLabel>
       </Tag>
       <Stack direction="row" alignItems="center">
         <Heading size="lg" mr="2rem">
