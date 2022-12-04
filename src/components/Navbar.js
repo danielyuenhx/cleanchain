@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Flex,
@@ -25,6 +25,18 @@ const Navbar = () => {
   const isConnectedToPeraWallet = !!accountAddress;
 
   const toast = useToast();
+
+  const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    let accountInfo = algod
+      .accountInformation(accountAddress)
+      .do()
+      .then(accountInfo => {
+        console.log(accountInfo.amount);
+        setBalance(accountInfo.amount);
+      });
+  });
 
   function handleDisconnectWalletClick() {
     peraWallet.disconnect();
@@ -80,6 +92,11 @@ const Navbar = () => {
             <Tag>
               0x{accountAddress.substring(0, 4)}...
               {accountAddress.substring(accountAddress.length - 4)}
+            </Tag>
+          )}
+          {isConnectedToPeraWallet && (
+            <Tag>
+              BALANCE: {balance} microAlgos
             </Tag>
           )}
           <Button
