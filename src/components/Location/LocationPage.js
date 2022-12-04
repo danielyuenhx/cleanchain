@@ -50,7 +50,9 @@ const LocationPage = () => {
       // get suggested params
       const suggestedParams = await algod.getTransactionParams().do();
 
-      const actionTx = algod.makeApplicationNoOpTxn(
+      console.log(suggestedParams);
+
+      const actionTx = algosdk.makeApplicationOptInTxn(
         accountAddress,
         suggestedParams,
         appIndex,
@@ -59,10 +61,9 @@ const LocationPage = () => {
       const actionTxGroup = [{txn: actionTx, signers: [accountAddress]}];
 
       const signedTx = await peraWallet.signTransaction([actionTxGroup]);
-      console.log(signedTx);
+
       const { txId } = await algod.sendRawTransaction(signedTx).do();
       const result = await waitForConfirmation(algod, txId, 2);
-      console.log(result)
     } catch (e) {
       console.log(e);
     }
