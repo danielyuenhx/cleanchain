@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import {
-  Badge,
   Button,
   Flex,
   Heading,
