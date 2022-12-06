@@ -45,7 +45,7 @@ const LocationList = ({ locations }) => {
               type={location.samplingPointType.label}
               coordinates={[location.long, location.lat]}
               bounty={location.bounty}
-              isOpen={location.isOpen}
+              isOpen={location.isClaimed}
               image={imageList[Math.floor(Math.random() * imageList.length)]}
             />
           ))

@@ -22,7 +22,7 @@ const Location = ({
   type,
   bounty,
   coordinates,
-  isOpen,
+  isClaimed,
   image,
 }) => {
   const bg = useColorModeValue('#fcfbfd', '#1b1c1f');
@@ -60,7 +60,7 @@ const Location = ({
               h="1rem"
             >
               <TagLeftIcon boxSize="12px" as={MoneyIcon} />
-              <TagLabel>{bounty} microALGOs</TagLabel>
+              <TagLabel>{bounty} ALGOs</TagLabel>
             </Tag>
 
             <Stack direction="row" alignItems="center">
@@ -91,10 +91,10 @@ const Location = ({
             <Text
               mt="0.5rem"
               fontSize="lg"
-              color={isOpen ? 'green.500' : 'gray.500'}
+              color={!isClaimed ? 'green.500' : 'gray.500'}
               fontWeight={700}
             >
-              {isOpen ? 'OPEN' : 'CLOSED'}
+              {!isClaimed ? 'OPEN' : 'CLOSED'}
             </Text>
           </CardBody>
           {/* <Divider />

@@ -26,7 +26,7 @@ import {
   Input,
   Stack,
 } from '@chakra-ui/react';
-import { getSamplePoint } from '../../api';
+import { getSamplePoint, closeBounty, updateBounty } from '../../api';
 import LocationInfo from './LocationInfo';
 import AcceptanceCriteria from './AcceptanceCriteria';
 
@@ -35,32 +35,39 @@ import walletContext from '../walletContext';
 import accountContext from '../accountContext';
 
 const LocationPage = () => {
+  const bg = useColorModeValue('#fffff', '#121316');
+
   const [location, setLocation] = useState('');
   const { locationId } = useParams();
+
+  const [bounty, setBounty] = useState(0);
+  const [isClaimed, setIsClaimed] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
 
   useEffect(() => {
     getSamplePoint(locationId).then(res => {
       setLocation(res.data);
+      setBounty(res.data.bounty);
+      setIsClaimed(res.data.isClaimed);
+      setIsConfirmed(res.data.isConfirmed);
     });
   }, [locationId]);
 
-  const bg = useColorModeValue('#fffff', '#121316');
-
+  // UI overlays
   const confirmActions = useDisclosure();
   const donateActions = useDisclosure();
-  const [isConfirmed, setIsConfirmed] = useState(false);
   const toast = useToast();
-  const [isClaimed, setIsClaimed] = useState(false);
 
+  // context API
   const { peraWallet, algod, appIndex } = useContext(walletContext);
   const { accountAddress, setAccountAddress, balance, setBalance } =
     useContext(accountContext);
 
   const isConnectedToPeraWallet = !!accountAddress;
 
-  const [isNgo, setIsNgo] = useState(false);
-  const [bounty, setBounty] = useState(0);
+  const [isNgo, setIsNgo] = useState(true);
 
+  // opt in to smart contract
   const optIn = async () => {
     try {
       // get suggested params
@@ -83,10 +90,14 @@ const LocationPage = () => {
     }
   };
 
-  const onConfirm = async () => {
+  // confirm selection of project
+  const onConfirm = async (action) => {
     try {
-      confirmActions.onClose();
-      setIsConfirmed(true);
+      if (action === 'select') {
+        confirmActions.onClose();
+        setIsConfirmed(true);
+      }
+
       // get suggested params
       const suggestedParams = await algod.getTransactionParams().do();
 
@@ -95,7 +106,7 @@ const LocationPage = () => {
       const actionTx = algosdk.makeApplicationCallTxnFromObject({
         appIndex,
         from: accountAddress,
-        appArgs: [new Uint8Array(Buffer.from('select'))],
+        appArgs: [new Uint8Array(Buffer.from(action))],
         suggestedParams,
       });
 
@@ -105,26 +116,47 @@ const LocationPage = () => {
 
       const { txId } = await algod.sendRawTransaction(signedTx).do();
       const result = await waitForConfirmation(algod, txId, 2);
-      console.log(result);
 
-      toast({
-        title: 'Project selected',
-        description:
-          'Successfully selected this project. Verify to claim within 30 days.',
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-      });
+      if (action === 'select') {
+        toast({
+          title: 'Project selected',
+          description:
+            'Successfully selected this project. Verify to claim within 30 days.',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: 'Project deselected',
+          description:
+            'Successfully deselected this project.',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        });
+      }
+
     } catch (e) {
       console.log(e);
-      toast({
-        title: 'Transaction Failed',
-        description: 'Already expressed interest for this project.',
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      });
-      setIsConfirmed(false);
+      if (action === 'select') {
+        toast({
+          title: 'Transaction Failed',
+          description: 'Already expressed interest for this project.',
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        });
+        setIsConfirmed(false);
+      } else {
+        toast({
+          title: 'Transaction Failed',
+          description: 'Could not unselect this project. Try selecting it first.',
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        });
+      }
     }
   };
 
@@ -145,8 +177,9 @@ const LocationPage = () => {
         suggestedParams,
       });
 
+      // pay to hardcoded wallet
       let payTransaction = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-        amount: parseInt(donation),
+        amount: algosdk.algosToMicroalgos(parseInt(donation)),
         to: 'UHSC3NR7QNHQJTGQY44RQYMD47XLO7KH5DNK64JRVOBL4DQ5X2C6FNMMII',
         from: accountAddress,
         suggestedParams,
@@ -164,12 +197,16 @@ const LocationPage = () => {
       const result = await algosdk.waitForConfirmation(algod, tx.txId, 2);
 
       setBalance(balance - parseInt(donation));
+
+      await updateBounty(locationId, bounty + parseInt(donation));
       setBounty(bounty + parseInt(donation));
 
       toast({
         title: 'Donation successful!',
         description:
-          'Successfully donated ' + donation + ' microALGOs to 0xUHSC...MMII',
+          'Successfully donated ' +
+          parseInt(donation) +
+          ' ALGOs to 0xUHSC...MMII',
         status: 'success',
         duration: 9000,
         isClosable: true,
@@ -187,6 +224,7 @@ const LocationPage = () => {
     }
   };
 
+  // on claim of bounty
   const onClaim = async () => {
     try {
       const suggestedParams = await algod.getTransactionParams().do();
@@ -210,6 +248,7 @@ const LocationPage = () => {
       const { txId } = await algod.sendRawTransaction(signedTx).do();
       const result = await waitForConfirmation(algod, txId, 2);
 
+      await closeBounty(locationId);
       setIsClaimed(true);
 
       toast({
@@ -234,6 +273,7 @@ const LocationPage = () => {
     }
   };
 
+  // send a verification request
   const onSend = () => {
     confirmActions.onClose();
 
@@ -244,6 +284,10 @@ const LocationPage = () => {
       duration: 9000,
       isClosable: true,
     });
+  };
+
+  const onVerify = () => {
+    setIsNgo(!isNgo);
   };
 
   return (
@@ -266,15 +310,11 @@ const LocationPage = () => {
           px={['4rem', '4rem', '4rem', '4rem', '16rem']}
           py="3rem"
         >
-          <LocationInfo
-            location={location}
-            bounty={bounty}
-            isClaimed={isClaimed}
-          />
+          <LocationInfo location={location} bounty={bounty} />
           <Divider mt="1.5rem" />
           <AcceptanceCriteria />
           <Flex ml="1rem" pb="5rem" mt="3rem" justifyContent="space-between">
-            {location.isOpen && isConnectedToPeraWallet ? (
+            {!location.isClaimed && isConnectedToPeraWallet ? (
               <>
                 <HStack spacing={5}>
                   {isConfirmed ? (
@@ -298,14 +338,29 @@ const LocationPage = () => {
                     Donate
                   </Button>
                 </HStack>
-                <Button right={0} colorScheme="green" onClick={onClaim}>
-                  Claim
-                </Button>
+                {isNgo && (
+                  <Button right={0} colorScheme="green" onClick={onClaim}>
+                    Claim
+                  </Button>
+                )}
               </>
             ) : (
               <></>
             )}
           </Flex>
+          <Divider />
+          <Text ml="1rem" mt="1rem">
+            For the purpose of this demonstration, administrator commands can be
+            found below to verify the current wallet and deselect the project.
+          </Text>
+          <HStack spacing={5} ml="1rem" pb="5rem" mt="1rem">
+            <Button colorScheme="green" onClick={onVerify}>
+              {isNgo ? "Unverify wallet" : "Verify wallet"}
+            </Button>
+            <Button colorScheme="green" onClick={onConfirm.bind(null, 'deselect')}>
+              Deselect project
+            </Button>
+          </HStack>
           <Modal
             isOpen={confirmActions.isOpen}
             onClose={confirmActions.onClose}
@@ -325,7 +380,7 @@ const LocationPage = () => {
                     during this period. Are you sure?
                   </ModalBody>
                   <ModalFooter>
-                    <Button colorScheme="blue" mr={3} onClick={onConfirm}>
+                    <Button colorScheme="blue" mr={3} onClick={onConfirm.bind(null, 'select')}>
                       Confirm
                     </Button>
                     <Button variant="ghost" onClick={confirmActions.onClose}>

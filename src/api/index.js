@@ -6,6 +6,6 @@ export const getSamplePoints = () => axios.get(`${url}/getSamplePoints`);
 export const getSamplePoint = location =>
   axios.get(`${url}/getSamplePoint/${location}`);
 export const closeBounty = location =>
-  axios.get(`${url}/closeBounty/${location}`);
-export const addBounty = location =>
-  axios.get(`${url}/addBounty/${location}`);
+  axios.post(`${url}/closeBounty/${location}`);
+export const updateBounty = (location, donation) =>
+  axios.post(`${url}/updateBounty/${location}`, { donation: donation });

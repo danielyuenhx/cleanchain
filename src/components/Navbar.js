@@ -12,6 +12,7 @@ import {
 import { ColorModeSwitcher } from '../ColorModeSwitcher';
 import logo from '../logo2.png';
 import { Link } from 'react-router-dom';
+import algosdk, { waitForConfirmation } from 'algosdk';
 
 import walletContext from './walletContext';
 import accountContext from './accountContext';
@@ -31,7 +32,7 @@ const Navbar = () => {
       .accountInformation(accountAddress)
       .do()
       .then(accountInfo => {
-        setBalance(accountInfo.amount);
+        setBalance(algosdk.microalgosToAlgos(accountInfo.amount));
       });
   });
 
@@ -93,7 +94,7 @@ const Navbar = () => {
           )}
           {isConnectedToPeraWallet && (
             <Tag>
-              {balance} microALGOs
+              {balance} ALGOs
             </Tag>
           )}
           <Button

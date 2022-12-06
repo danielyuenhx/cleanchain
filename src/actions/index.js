@@ -31,9 +31,9 @@ export const closeBounty = async () => {
   }
 };
 
-export const addBounty = async () => {
+export const updateBounty = async () => {
   try {
-    const { data } = await api.addBounty();
+    const { data } = await api.updateBounty();
 
     return data;
   } catch (e) {
