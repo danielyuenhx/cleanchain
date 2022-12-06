@@ -1,7 +1,7 @@
 # Cleanchain-Frontend 
 ![CleanChain](src/logo.png)
 
-This repository contains the frontend web application written for the CleanChain Application, developed for ACE-SIP Blockchain Hackathon.
+This repository contains the frontend web application written for the CleanChain Application, developed for ACE-SIP Blockchain Hackathon. Currently, this repository only contains code for demonstration purposes.
 
 ## Setup:
 
@@ -39,4 +39,8 @@ PS: Currently, the smart contract will always approve claims to the bounty as lo
 
 ## Linking with [CleanChain-Backend](https://github.com/danielyuenhx/cleanchain-backend):
 
-Make note of the App ID of your smart contract app and enter it in the `appIndex` variable within the App.js file of the React app.
+Run data fetching API in the backend by using:
+
+`python server.py`
+
+Make note of the App ID of your smart contract app and enter it in the `appIndex` variable within the App.js file of the React app. Follow the instructions listed to access the Algorand testnet.
